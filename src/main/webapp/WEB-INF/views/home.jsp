@@ -32,7 +32,7 @@
 		<progress id="receiveProgress" max="0" value="0"></progress>
 	</div>
 
-	<a id="download"></a>
+	/* <a id="download"></a> */
 	<span id="status"></span>
 
 <script>
@@ -48,7 +48,7 @@
 	
 	const fileInput = document.querySelector('input#fileInput');
 	const abortButton = document.querySelector('button#abortButton');
-	const downloadAnchor = document.querySelector('a#download');
+	
 	const sendProgress = document.querySelector('progress#sendProgress');
 	const receiveProgress = document.querySelector('progress#receiveProgress');
 	const statusMessage = document.querySelector('span#status');
@@ -94,6 +94,7 @@
 			'filename' : file.name
 		};
 		dc.send(JSON.stringify(obj));
+		log("<p style='margin: 5px; float: right; background: #ffe100;'><"+file.name+"> "+file.size+"(bytes)</p><br>");
 		
 		statusMessage.textContent = '';
 		downloadAnchor.textContent = '';
@@ -177,6 +178,10 @@
 				downloadAnchor.download = fname;
 				downloadAnchor.textContent = "Click to download <" + fname + "> " +fsize + "(bytes)";
 				downloadAnchor.style.display = 'block';
+				
+				log("<p style='margin: 5px; float: left; background: #d4d4d4;'><a href='"+downloadAnchor.href+"' download='"+downloadAnchor.download+"' style='display: "+downloadAnchor.style.display+";'>"+downloadAnchor.textContent+"</a></p><br>");
+				receiveBuffer = [];
+				receivedSize = 0;
 			}
 		}
 		
