@@ -158,6 +158,7 @@
 		}
 		
 		if(typeof e.data == 'object') {
+			var downloadAnchor = document.createElement("a");
 			downloadAnchor.textContent = '';
 			downloadAnchor.removeAttribute('download');
 			
@@ -176,7 +177,7 @@
 				
 				downloadAnchor.href = URL.createObjectURL(received);
 				downloadAnchor.download = fname;
-				downloadAnchor.textContent = "Click to download <" + fname + "> " +fsize + "(bytes)";
+				downloadAnchor.textContent = "<" + fname + "> " +fsize + "(bytes)";
 				downloadAnchor.style.display = 'block';
 				
 				log("<p style='margin: 5px; float: left; background: #d4d4d4;'><a href='"+downloadAnchor.href+"' download='"+downloadAnchor.download+"' style='display: "+downloadAnchor.style.display+";'>"+downloadAnchor.textContent+"</a></p><br>");
