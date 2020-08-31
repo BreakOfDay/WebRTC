@@ -32,7 +32,6 @@
 		<progress id="receiveProgress" max="0" value="0"></progress>
 	</div>
 
-	<!-- <a id="download"></a> -->
 	<span id="status"></span>
 
 <script>
@@ -43,12 +42,11 @@
 	const log = function(msg) {
 		div.innerHTML += "<br>"+msg;
 	}
-	/* 파일전송테스트 */
-	var fileReader;
 	
+	/* 파일전송 변수 */
+	var fileReader;
 	const fileInput = document.querySelector('input#fileInput');
 	const abortButton = document.querySelector('button#abortButton');
-	
 	const sendProgress = document.querySelector('progress#sendProgress');
 	const receiveProgress = document.querySelector('progress#receiveProgress');
 	const statusMessage = document.querySelector('span#status');
@@ -97,7 +95,6 @@
 		log("<p style='margin: 5px; float: right; background: #ffe100;'><"+file.name+"> "+file.size+"(bytes)</p><br>");
 		
 		statusMessage.textContent = '';
-		//downloadAnchor.textContent = '';
 		
 		if(file.size === 0) {
 			statusMessage.textContent = 'File is empty, please select a non-empty file';
@@ -108,7 +105,7 @@
 		receiveProgress.max = file.size;
 		
 		const chunkSize = 16384;
-		fileReader = new FileReader();
+		fileReader = new FileReader(); // 파일 읽기
 		var offset = 0;
 		fileReader.addEventListener('error', error => console.error('Error reading file:', error));
 		fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
@@ -123,8 +120,8 @@
 		});
 		const readSlice = o => {
 			console.log('readSlice ', o);
-			const slice = file.slice(offset, o + chunkSize);
-			fileReader.readAsArrayBuffer(slice);
+			const slice = file.slice(offset, o + chunkSize); // slice(start, end) : start부터 end 바로 전 까지 선택
+			fileReader.readAsArrayBuffer(slice); // ArrayBuffer(바이트로 구성된 배열) 형식으로 파읽 읽음.
 		};
 		readSlice(0);
 	}
@@ -134,10 +131,10 @@
 		chat.select();
 	} 
 	
-	function IsJsonString(str) {
+	function IsJsonString(str) { // json 타입인지 구분하는 함수
 		  try {
 		    var json = JSON.parse(str);
-		    return (typeof json === 'object');
+		    return (typeof json === 'object'); // json일 경우 type은 object이므로 true 리턴
 		  } catch (e) {
 		    return false;
 		  }
@@ -158,29 +155,17 @@
 		}
 		
 		if(typeof e.data == 'object') {
-			var downloadAnchor = document.createElement("a");
-			downloadAnchor.textContent = '';
-			downloadAnchor.removeAttribute('download');
-			
-			if(downloadAnchor.href) {
-				URL.revokeObjectURL(downloadAnchor.href);
-				downloadAnchor.removeAttribute('href');
-			}
-			
 			receiveBuffer.push(e.data);
 			receivedSize += e.data.byteLength;
 			receiveProgress.value = receivedSize;
 			
 			if(receivedSize == fsize) {
-				const received = new Blob(receiveBuffer);
-				receiveBuffer = [];
+				const received = new Blob(receiveBuffer); // Blob : 대용량 바이너리 객체. 대체로 이미지나 사운드 파일 같은 하나의 커다란 파일
 				
-				downloadAnchor.href = URL.createObjectURL(received);
-				downloadAnchor.download = fname;
-				downloadAnchor.textContent = "<" + fname + "> " +fsize + "(bytes)";
-				downloadAnchor.style.display = 'block';
+				var url = URL.createObjectURL(received); // Blob 객체를 나타내는 URL을 포함한 DOMString 생성. 생성된 window의 document에서만 유효.
+				var txt = "<" + fname + "> " +fsize + "(bytes)";
 				
-				log("<p style='margin: 5px; float: left; background: #d4d4d4;'><a href='"+downloadAnchor.href+"' download='"+downloadAnchor.download+"' style='display: "+downloadAnchor.style.display+";'>"+downloadAnchor.textContent+"</a></p><br>");
+				log("<p style='margin: 5px; float: left; background: #d4d4d4;'><a href='"+url+"' download='"+fname+"' style='display: block;'>"+txt+"</a></p><br>");
 				receiveBuffer = [];
 				receivedSize = 0;
 			}
