@@ -32,7 +32,7 @@
 		<progress id="receiveProgress" max="0" value="0"></progress>
 	</div>
 
-	/* <a id="download"></a> */
+	<!-- <a id="download"></a> -->
 	<span id="status"></span>
 
 <script>
@@ -88,7 +88,7 @@
 	/* sendData() */
 	function sendData() {
 		const file = fileInput.files[0];
-		//dc.send(file.size);
+		
 		var obj = { 
 			'filesize' : file.size,
 			'filename' : file.name
@@ -97,7 +97,7 @@
 		log("<p style='margin: 5px; float: right; background: #ffe100;'><"+file.name+"> "+file.size+"(bytes)</p><br>");
 		
 		statusMessage.textContent = '';
-		downloadAnchor.textContent = '';
+		//downloadAnchor.textContent = '';
 		
 		if(file.size === 0) {
 			statusMessage.textContent = 'File is empty, please select a non-empty file';
@@ -144,7 +144,7 @@
 	}
 	
 	dc.onmessage = function(e) { // 요청 데이터 받아와 사용
-		
+		console.log(e);
 		var arr;
 		if(typeof e.data == 'string') {
 			if(IsJsonString(e.data)) {
