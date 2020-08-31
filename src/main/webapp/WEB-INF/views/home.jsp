@@ -6,7 +6,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body style="width: 445px; margin: auto;">
-
+	
 	<button id="button" onclick="createOffer()">Offer:</button>
 	<textarea id="offer" placeholder="Paste offer here"></textarea>
 	Answer: <textarea id="answer"></textarea><br><div id="div"></div>
@@ -35,6 +35,19 @@
 	<span id="status"></span>
 
 <script>
+	/*
+	* Origin code 
+	* 1. https://stackoverflow.com/questions/54980799/webrtc-datachannel-with-manual-signaling-example-please?answertab=oldest#tab-top
+	*/
+	
+	/* 2. https://github.com/webrtc/samples/blob/gh-pages/src/content/datachannel/filetransfer/js/main.js
+	 *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+	 *
+	 *  Use of this source code is governed by a BSD-style license
+	 *  that can be found in the LICENSE file in the root of the source
+	 *  tree.
+	*/
+	
 	// ice : 두 단말이 서로 통신할 수 있는 최적의 경로를 찾을 수 있도록 도와주는 프레임워크
 	const config = {iceServers: [{urls: "stun:stun.1.google.com:19302"}]}; // google의 공개 stun 서버 중 하나
 	const pc = new RTCPeerConnection(config); // 로컬과 원격 피어 간 연결 나타내는 새로운 객체 생성 반환
