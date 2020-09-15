@@ -40,12 +40,13 @@
 	* 1. https://stackoverflow.com/questions/54980799/webrtc-datachannel-with-manual-signaling-example-please?answertab=oldest#tab-top
 	*/
 	
-	/* 2. https://github.com/webrtc/samples/blob/gh-pages/src/content/datachannel/filetransfer/js/main.js
-	 *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
-	 *
-	 *  Use of this source code is governed by a BSD-style license
-	 *  that can be found in the LICENSE file in the root of the source
-	 *  tree.
+	/* 
+	* 2. https://github.com/webrtc/samples/blob/gh-pages/src/content/datachannel/filetransfer/js/main.js
+	*  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+	*
+	*  Use of this source code is governed by a BSD-style license
+	*  that can be found in the LICENSE file in the root of the source
+	*  tree.
 	*/
 	
 	// ice : 두 단말이 서로 통신할 수 있는 최적의 경로를 찾을 수 있도록 도와주는 프레임워크
@@ -55,6 +56,11 @@
 	const log = function(msg) {
 		div.innerHTML += "<br>"+msg;
 	}
+	
+	var chat = document.querySelector('input#chat');
+	var offer =  document.querySelector('#offer');
+	var button = document.querySelector("#button");
+	var answer = document.querySelector("#answer");
 	
 	/* 파일전송 변수 */
 	var fileReader;
@@ -105,7 +111,7 @@
 			'filename' : file.name
 		};
 		dc.send(JSON.stringify(obj));
-		log("<p style='margin: 5px; float: right; background: #ffe100;'><"+file.name+"> "+file.size+"(bytes)</p><br>");
+		log("<p style='margin: 5px; float: right; background: #ffe100;'>&lt;"+file.name+"&gt; "+file.size+"(bytes)</p><br>");
 		
 		statusMessage.textContent = '';
 		
@@ -176,7 +182,7 @@
 				const received = new Blob(receiveBuffer); // Blob : 대용량 바이너리 객체. 대체로 이미지나 사운드 파일 같은 하나의 커다란 파일
 				
 				var url = URL.createObjectURL(received); // Blob 객체를 나타내는 URL을 포함한 DOMString 생성. 생성된 window의 document에서만 유효.
-				var txt = "<" + fname + "> " +fsize + "(bytes)";
+				var txt = "&lt;" + fname + "&gt; " +fsize + "(bytes)";
 				
 				log("<p style='margin: 5px; float: left; background: #d4d4d4;'><a href='"+url+"' download='"+fname+"' style='display: block;'>"+txt+"</a></p><br>");
 				receiveBuffer = [];
@@ -221,7 +227,7 @@
 		if (e.keyCode != 13 || pc.signalingState != "stable") return; // stable : 현재 진행중인 제안 및 답변 교환 없음. 또는 연결 이미 완료
 		button.disabled = offer.disabled = true;
 		
-		/* await pc.setRemoteDescription({type: "offer", sdp: offer.value}); */
+		/* await pc.setRㅊㅇemoteDescription({type: "offer", sdp: offer.value}); */
 		(function() {
 			pc.setRemoteDescription({type: "offer", sdp: offer.value});
 		})();
